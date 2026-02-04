@@ -1,0 +1,15 @@
+
+[
+  {
+    "tags": ["reaction", "speed", "reflex", "cyber-athlete", "sprinter"],
+    "content": "Reaction time is heavily influenced by sleep and dopamine levels. Studies show that aerobic exercise can improve RT by up to 10% immediately post-workout."
+  },
+  {
+    "tags": ["memory", "spatial", "n-back", "thinker"],
+    "content": "Spatial memory relies on the hippocampus. The 'Method of Loci' is the most effective training technique. Chronic stress damages the hippocampus and reduces memory span."
+  },
+  {
+    "tags": ["stroop", "focus", "inhibition", "athlete"],
+    "content": "The Stroop test measures executive control in the prefrontal cortex. Meditation (Mindfulness) increases gray matter density in this area, improving inhibition scores."
+  }
+]
