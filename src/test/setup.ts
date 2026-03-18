@@ -1,5 +1,6 @@
 import '@testing-library/jest-dom';
 
+// Мокаем localStorage для тестов
 const localStorageMock = (() => {
   let store: Record<string, string> = {};
   return {

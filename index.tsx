@@ -1,8 +1,8 @@
 
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './src/App.tsx';
-import './src/i18n.ts';
+import App from './App.tsx';
+import './i18n.ts';
 
 // Service Worker Registration for PWA
 if ('serviceWorker' in navigator) {

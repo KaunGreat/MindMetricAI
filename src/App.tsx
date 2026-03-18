@@ -1,29 +1,39 @@
-
-import React, { useState } from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import { HashRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Header from './components/Header.tsx';
-import Dashboard from './components/Dashboard.tsx';
-import Insights from './components/Insights.tsx';
-import ProfilePage from './components/ProfilePage.tsx';
-import LoginPage from './components/LoginPage.tsx';
-import RegisterPage from './components/RegisterPage.tsx';
 import ProtectedRoute from './components/ProtectedRoute.tsx';
-import TestSessionPage from './pages/TestSessionPage.tsx';
-import WellnessPage from './pages/WellnessPage.tsx';
-import SocialPage from './pages/SocialPage.tsx';
-import LandingPage from './pages/LandingPage.tsx';
-import PricingPage from './pages/PricingPage.tsx';
-import AICoach from './components/coach/AICoach.tsx';
-import PrivacyPolicy from './pages/legal/PrivacyPolicy.tsx';
-import TermsOfService from './pages/legal/TermsOfService.tsx';
-import ResearchEthics from './pages/legal/ResearchEthics.tsx';
 import ConsentBanner from './components/ui/ConsentBanner.tsx';
 import { AuthProvider } from './context/AuthContext.tsx';
 import { useUserData } from './hooks/useUserData.ts';
-import { Bot, MessageSquareText } from 'lucide-react';
+import { Bot, MessageSquareText, Loader2 } from 'lucide-react';
+
+// Статические импорты — нужны сразу при загрузке
+import LandingPage from './pages/LandingPage.tsx';
+import LoginPage from './components/LoginPage.tsx';
+import RegisterPage from './components/RegisterPage.tsx';
+
+// Lazy imports — загружаются только когда пользователь переходит на страницу
+const Dashboard      = lazy(() => import('./components/Dashboard.tsx'));
+const Insights       = lazy(() => import('./components/Insights.tsx'));
+const ProfilePage    = lazy(() => import('./components/ProfilePage.tsx'));
+const TestSessionPage = lazy(() => import('./pages/TestSessionPage.tsx'));
+const WellnessPage   = lazy(() => import('./pages/WellnessPage.tsx'));
+const SocialPage     = lazy(() => import('./pages/SocialPage.tsx'));
+const PricingPage    = lazy(() => import('./pages/PricingPage.tsx'));
+const AICoach        = lazy(() => import('./components/coach/AICoach.tsx'));
+const PrivacyPolicy  = lazy(() => import('./pages/legal/PrivacyPolicy.tsx'));
+const TermsOfService = lazy(() => import('./pages/legal/TermsOfService.tsx'));
+const ResearchEthics = lazy(() => import('./pages/legal/ResearchEthics.tsx'));
+
+// Лоадер пока компонент подгружается
+const PageLoader = () => (
+  <div className="flex items-center justify-center min-h-[60vh]">
+    <Loader2 className="w-8 h-8 text-blue-400 animate-spin" />
+  </div>
+);
 
 const App: React.FC = () => {
-  const { history, clearHistory } = useUserData();
+  const { history } = useUserData();
   const [isCoachOpen, setIsCoachOpen] = useState(false);
 
   return (
@@ -31,55 +41,53 @@ const App: React.FC = () => {
       <Router>
         <div className="min-h-screen flex flex-col bg-slate-950 text-slate-200">
           <Header />
-          
+
           <main className="flex-1 container mx-auto px-4 py-8 relative">
-            <Routes>
-              {/* Public Marketing & Legal Routes */}
-              <Route path="/" element={<LandingPage />} />
-              <Route path="/pricing" element={<PricingPage />} />
-              <Route path="/privacy" element={<PrivacyPolicy />} />
-              <Route path="/terms" element={<TermsOfService />} />
-              <Route path="/ethics" element={<ResearchEthics />} />
-              
-              {/* Auth Routes */}
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/register" element={<RegisterPage />} />
+            <Suspense fallback={<PageLoader />}>
+              <Routes>
+                {/* Public */}
+                <Route path="/" element={<LandingPage />} />
+                <Route path="/pricing" element={<PricingPage />} />
+                <Route path="/privacy" element={<PrivacyPolicy />} />
+                <Route path="/terms" element={<TermsOfService />} />
+                <Route path="/ethics" element={<ResearchEthics />} />
 
-              {/* Protected Dashboard Routes */}
-              <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-              
-              {/* Dynamic Test Route */}
-              <Route path="/test/:testId" element={<ProtectedRoute><TestSessionPage /></ProtectedRoute>} />
-              
-              {/* Feature Routes */}
-              <Route path="/wellness" element={<ProtectedRoute><WellnessPage /></ProtectedRoute>} />
-              <Route path="/social" element={<ProtectedRoute><SocialPage /></ProtectedRoute>} />
-              <Route path="/insights" element={<ProtectedRoute><Insights results={[]} /></ProtectedRoute>} />
-              <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
-              
-              {/* Fallback for construction */}
-              <Route 
-                path="/test/sequence" 
-                element={
-                  <ProtectedRoute>
-                    <div className="p-12 text-center bg-slate-900 rounded-3xl border border-dashed border-slate-700">
-                      <h2 className="text-2xl font-bold mb-4">Module Under Construction</h2>
-                      <p className="text-slate-400">Advanced Sequence capacity testing is coming soon.</p>
-                      <Link to="/" className="mt-6 inline-block px-6 py-2 bg-slate-800 rounded-lg">Return Home</Link>
-                    </div>
-                  </ProtectedRoute>
-                } 
+                {/* Auth */}
+                <Route path="/login" element={<LoginPage />} />
+                <Route path="/register" element={<RegisterPage />} />
+
+                {/* Protected */}
+                <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+                <Route path="/test/:testId" element={<ProtectedRoute><TestSessionPage /></ProtectedRoute>} />
+                <Route path="/wellness" element={<ProtectedRoute><WellnessPage /></ProtectedRoute>} />
+                <Route path="/social" element={<ProtectedRoute><SocialPage /></ProtectedRoute>} />
+                <Route path="/insights" element={<ProtectedRoute><Insights results={[]} /></ProtectedRoute>} />
+                <Route path="/profile" element={<ProtectedRoute><ProfilePage /></ProtectedRoute>} />
+
+                <Route
+                  path="/test/sequence"
+                  element={
+                    <ProtectedRoute>
+                      <div className="p-12 text-center bg-slate-900 rounded-3xl border border-dashed border-slate-700">
+                        <h2 className="text-2xl font-bold mb-4">Module Under Construction</h2>
+                        <p className="text-slate-400">Advanced Sequence capacity testing is coming soon.</p>
+                        <Link to="/" className="mt-6 inline-block px-6 py-2 bg-slate-800 rounded-lg">Return Home</Link>
+                      </div>
+                    </ProtectedRoute>
+                  }
+                />
+              </Routes>
+            </Suspense>
+
+            {/* AI Coach */}
+            <Suspense fallback={null}>
+              <AICoach
+                isOpen={isCoachOpen}
+                onClose={() => setIsCoachOpen(false)}
+                history={history}
               />
-            </Routes>
+            </Suspense>
 
-            {/* AI Coach Chat Interface */}
-            <AICoach 
-              isOpen={isCoachOpen} 
-              onClose={() => setIsCoachOpen(false)} 
-              history={history} 
-            />
-
-            {/* Floating Action Button for AI Coach */}
             <button
               onClick={() => setIsCoachOpen(true)}
               className="fixed bottom-8 right-8 z-50 p-4 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl shadow-2xl shadow-blue-600/40 transition-all hover:scale-110 active:scale-90 group"
@@ -100,7 +108,7 @@ const App: React.FC = () => {
               <div className="space-y-4 text-center md:text-left">
                 <div className="text-slate-300 font-black uppercase tracking-tighter text-xl">MindMetricAI</div>
                 <div className="text-slate-500 text-xs max-w-xs">
-                  Next-generation cognitive assessment & high-performance bio-metrics. Quantify your mind today.
+                  Next-generation cognitive assessment & high-performance bio-metrics.
                 </div>
               </div>
               <div className="flex flex-wrap items-center justify-center gap-x-8 gap-y-4">
@@ -113,8 +121,7 @@ const App: React.FC = () => {
               </div>
             </div>
           </footer>
-          
-          {/* Global Consent Flow */}
+
           <ConsentBanner />
         </div>
       </Router>
