@@ -1,32 +1,23 @@
-
 import { useState, useEffect } from 'react';
+import { TestResult } from '../types';
 
-export interface TestResult {
-  id: string;
-  type: string; // 'reaction', 'memory', 'stroop', etc.
-  score: number | string;
-  date: string;
-  details?: any;
-}
-
-// Added export for getXPForLevel to fix "Module has no exported member 'getXPForLevel'" in LevelProgress.tsx
 export const getXPForLevel = (level: number) => Math.pow(level - 1, 2) * 500;
 
-// Added export for getLevelTitle to fix "Module has no exported member 'getLevelTitle'" in Dashboard.tsx and LevelProgress.tsx
 export const getLevelTitle = (level: number) => {
   if (level >= 20) return "Omniscient Strategist";
   if (level >= 15) return "Neural Architect";
   if (level >= 10) return "Grandmaster Analyst";
-  if (level >= 5) return "Senior Specialist";
+  if (level >= 5)  return "Senior Specialist";
   return "Neural Novice";
 };
+
+const STORAGE_KEY = 'mindmetric_history';
 
 export const useUserData = () => {
   const [history, setHistory] = useState<TestResult[]>([]);
 
-  // Load from LocalStorage on mount
   useEffect(() => {
-    const saved = localStorage.getItem('mindmetric_history');
+    const saved = localStorage.getItem(STORAGE_KEY);
     if (saved) {
       try {
         setHistory(JSON.parse(saved));
@@ -36,30 +27,25 @@ export const useUserData = () => {
     }
   }, []);
 
-  // Save new result
-  const saveResult = (result: Omit<TestResult, 'id' | 'date'>) => {
+  const saveResult = (result: Pick<TestResult, 'type' | 'score' | 'details'>) => {
     const newEntry: TestResult = {
       ...result,
       id: Date.now().toString(),
-      date: new Date().toISOString()
+      timestamp: Date.now(),
     };
-
-    const updatedHistory = [newEntry, ...history];
-    setHistory(updatedHistory);
-    localStorage.setItem('mindmetric_history', JSON.stringify(updatedHistory));
-    console.log("✅ Result Saved:", newEntry);
+    const updated = [newEntry, ...history];
+    setHistory(updated);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
   };
 
-  // Clear history
   const clearHistory = () => {
     setHistory([]);
-    localStorage.removeItem('mindmetric_history');
+    localStorage.removeItem(STORAGE_KEY);
   };
 
-  // Keep these for backward compatibility with components that might still reference them for UI
   const xp = history.length * 50;
   const level = Math.floor(Math.sqrt(xp / 500)) + 1;
 
-  // Fix: added 'results' as an alias for 'history' to resolve "Property 'results' does not exist" errors in Dashboard.tsx, ReactionTest.tsx, and SocialPage.tsx.
+  // results — алиас history для обратной совместимости
   return { history, results: history, saveResult, clearHistory, xp, level };
 };

@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Search, RotateCcw, Trophy, Play, ChevronLeft, LayoutDashboard, Target, Zap, Circle, Square, Triangle } from 'lucide-react';
 
 interface VisualSearchTestProps {
-  onComplete: (score: number, metadata?: any) => void;
+  onComplete: (score: number, metadata?: Record<string, unknown>) => void;
   onCancel: () => void;
 }
 

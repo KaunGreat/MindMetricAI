@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { GitMerge, RotateCcw, Trophy, ChevronLeft, LayoutDashboard } from 'lucide-react';
 
 interface TowerOfLondonTestProps {
-  onComplete: (score: number, metadata?: any) => void;
+  onComplete: (score: number, metadata?: Record<string, unknown>) => void;
   onCancel: () => void;
 }
 

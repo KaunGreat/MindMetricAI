@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { useUserData } from '../hooks/useUserData';
-import { Trophy, History, Trash2, Calendar, Brain, Zap, Target } from 'lucide-react';
+import { Trophy, History, Trash2, Calendar, Brain, Zap, Target, AlertTriangle} from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const ProfilePage = () => {
@@ -23,6 +23,15 @@ const ProfilePage = () => {
       animate={{ opacity: 1, y: 0 }}
       className="p-6 max-w-4xl mx-auto text-white space-y-10 py-20"
     >
+      {/* Баннер: данные хранятся локально */}
+      <div className="flex items-start gap-3 px-5 py-4 bg-amber-500/5 border border-amber-500/20 rounded-2xl text-amber-400">
+        <AlertTriangle className="w-5 h-5 shrink-0 mt-0.5" />
+        <p className="text-xs font-semibold leading-relaxed">
+          <span className="font-black uppercase tracking-wider">Локальное хранилище.&nbsp;</span>
+          Ваши данные сохранены только в этом браузере. При смене устройства или очистке браузера прогресс будет потерян.
+        </p>
+      </div>
+
       <div className="flex justify-between items-center mb-8">
         <div>
           <h1 className="text-4xl font-black text-white uppercase tracking-tighter">My Profile</h1>

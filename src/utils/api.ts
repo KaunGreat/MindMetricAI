@@ -1,11 +1,8 @@
-
-const API_URL = 'http://localhost:8000';
-const MOCK_MODE = true;
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const MOCK_MODE = import.meta.env.VITE_MOCK_AUTH === 'true';
 
 export const checkApiStatus = async (): Promise<boolean> => {
-  if (MOCK_MODE) {
-    return true;
-  }
+  if (MOCK_MODE) return true;
   try {
     const response = await fetch(`${API_URL}/`, {
       method: 'GET',
@@ -34,15 +31,13 @@ export const registerUser = async (email: string, password: string) => {
 
 export const loginUser = async (email: string, password: string) => {
   const formData = new URLSearchParams();
-  formData.append('username', email); // FastAPI OAuth2 uses 'username'
+  formData.append('username', email);
   formData.append('password', password);
-
   const response = await fetch(`${API_URL}/token`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: formData.toString(),
   });
-
   if (!response.ok) {
     const error = await response.json();
     throw new Error(error.detail || 'Login failed');

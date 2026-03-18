@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Hash, RotateCcw, Trophy, ChevronLeft, Send, ArrowRight } from 'lucide-react';
 
 interface DigitSpanTestProps {
-  onComplete: (score: number, metadata?: any) => void;
+  onComplete: (score: number, metadata?: Record<string, unknown>) => void;
   onCancel: () => void;
 }
 

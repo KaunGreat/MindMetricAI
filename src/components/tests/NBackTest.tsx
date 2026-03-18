@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { Repeat, RotateCcw, Trophy, Play, ChevronLeft, LayoutDashboard, CheckCircle2, XCircle } from 'lucide-react';
 
 interface NBackTestProps {
-  onComplete: (score: number, metadata?: any) => void;
+  onComplete: (score: number, metadata?: Record<string, unknown>) => void;
   onCancel: () => void;
 }
 

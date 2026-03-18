@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { Landmark, RotateCcw, Trophy, ChevronLeft, ArrowRight, DollarSign } from 'lucide-react';
 
 interface GamblingTaskTestProps {
-  onComplete: (score: number, metadata?: any) => void;
+  onComplete: (score: number, metadata?: Record<string, unknown>) => void;
   onCancel: () => void;
 }
 

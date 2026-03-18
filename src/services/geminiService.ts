@@ -10,11 +10,11 @@ export const analyzeNeuralPatterns = async (
   results: TestResult[], 
   wellness: WellnessEntry[]
 ): Promise<{ insights: CognitiveInsight[], recommendation: string, circadianPeak: string }> => {
-  if (!process.env.API_KEY) {
+  if (!import.meta.env.VITE_API_KEY) {
     return { insights: [], recommendation: 'Uplink unavailable.', circadianPeak: 'Syncing...' };
   }
   
-  const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+  const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
   
   const context = {
     testHistory: results.slice(-10),

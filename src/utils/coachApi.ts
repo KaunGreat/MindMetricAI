@@ -18,12 +18,12 @@ export const getCoachResponse = async (prompt: string, history: TestResult[]): P
     return "Your neural session has expired. Please log in again to sync with my coaching core.";
   }
 
-  if (!process.env.API_KEY) {
+  if (!import.meta.env.VITE_API_KEY) {
     return "I'm currently disconnected from the MindMetric neural grid. Please check your configuration.";
   }
 
   try {
-    const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+    const ai = new GoogleGenAI({ apiKey: import.meta.env.VITE_API_KEY });
     
     const context = {
       testHistory: history.slice(-10),

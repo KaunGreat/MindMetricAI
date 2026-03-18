@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Smile, RotateCcw, Trophy, ChevronLeft, Eye } from 'lucide-react';
 
 interface EmotionRecognitionTestProps {
-  onComplete: (score: number, metadata?: any) => void;
+  onComplete: (score: number, metadata?: Record<string, unknown>) => void;
   onCancel: () => void;
 }
 

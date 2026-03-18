@@ -1,8 +1,7 @@
-
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { loginUser, registerUser, getCurrentUser } from '../utils/api.ts';
 
-const MOCK_AUTH = true;
+const MOCK_AUTH = import.meta.env.VITE_MOCK_AUTH === 'true';
 
 interface User {
   id: number;
@@ -29,7 +28,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
     const initAuth = async () => {
       if (token) {
         if (MOCK_AUTH) {
-          // Simulate fetching mock user from local token
           setUser({ id: 1, email: 'mock@mindmetric.ai' });
         } else {
           try {
@@ -51,13 +49,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
       await new Promise(r => setTimeout(r, 1000));
       const fakeToken = 'mock-jwt-token';
       const fakeUser = { id: 1, email };
-      
       localStorage.setItem('token', fakeToken);
       setToken(fakeToken);
       setUser(fakeUser);
       return;
     }
-
     const data = await loginUser(email, password);
     const newToken = data.access_token;
     localStorage.setItem('token', newToken);

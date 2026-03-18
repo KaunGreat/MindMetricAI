@@ -16,6 +16,7 @@ import {
 import { checkApiStatus } from '../utils/api.ts';
 import { WellnessEntry } from '../types.ts';
 import { useUserData, getLevelTitle } from '../hooks/useUserData.ts';
+import { containerVariants, itemVariants } from '../utils/animations.ts';
 import NeuralOptimizer from './NeuralOptimizer.tsx';
 
 const Dashboard: React.FC = () => {
@@ -30,8 +31,16 @@ const Dashboard: React.FC = () => {
       const online = await checkApiStatus();
       setIsApiOnline(online);
     };
+
+    // Проверяем статус один раз при монтировании
     verifyBackend();
-    
+
+    // Повторяем только когда пользователь возвращается на вкладку — не спамим запросами
+    const handleVisibility = () => {
+      if (document.visibilityState === 'visible') verifyBackend();
+    };
+    document.addEventListener('visibilitychange', handleVisibility);
+
     const saved = localStorage.getItem('mindmetric_wellness');
     if (saved) {
       try {
@@ -44,24 +53,10 @@ const Dashboard: React.FC = () => {
       }
     }
 
-    const interval = setInterval(verifyBackend, 30000);
-    return () => clearInterval(interval);
+    return () => document.removeEventListener('visibilitychange', handleVisibility);
   }, []);
 
   const levelTitle = getLevelTitle(level);
-
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: { 
-      opacity: 1,
-      transition: { staggerChildren: 0.1 }
-    }
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0 }
-  };
 
   return (
     <div className="space-y-12 pb-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

@@ -1,4 +1,3 @@
-
 export enum TestType {
   REACTION = 'REACTION',
   MEMORY = 'MEMORY',
@@ -17,10 +16,10 @@ export enum TestType {
 
 export interface TestResult {
   id: string;
-  type: TestType;
-  score: number;
-  timestamp: number;
-  metadata?: Record<string, any>;
+  type: string;           // строка для совместимости с URL-параметрами (/test/reaction)
+  score: number;          // всегда число — форматирование только в UI
+  timestamp: number;      // unix ms — единый формат для сортировки
+  details?: Record<string, unknown>; // типизированные метаданные вместо any
 }
 
 export interface WellnessEntry {

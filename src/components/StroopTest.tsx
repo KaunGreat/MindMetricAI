@@ -4,7 +4,7 @@ import { Target, RotateCcw, Trophy, ChevronLeft, LayoutDashboard, Zap } from 'lu
 import { Link } from 'react-router-dom';
 
 interface StroopTestProps {
-  onComplete: (score: number, metadata?: any) => void;
+  onComplete: (score: number, metadata?: Record<string, unknown>) => void;
   onCancel: () => void;
 }
 

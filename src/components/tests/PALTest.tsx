@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { Boxes, RotateCcw, Trophy, Play, ChevronLeft, LayoutDashboard, Star, Moon, Sun, Heart, Cloud, Zap } from 'lucide-react';
 
 interface PALTestProps {
-  onComplete: (score: number, metadata?: any) => void;
+  onComplete: (score: number, metadata?: Record<string, unknown>) => void;
   onCancel: () => void;
 }
 

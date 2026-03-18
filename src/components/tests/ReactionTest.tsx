@@ -7,7 +7,7 @@ import { useUserData } from '../../hooks/useUserData.ts';
 import { TestType } from '../../types.ts';
 
 interface ReactionTestProps {
-  onComplete: (score: number, metadata?: any) => void;
+  onComplete: (score: number, metadata?: Record<string, unknown>) => void;
   onCancel: () => void;
 }
 

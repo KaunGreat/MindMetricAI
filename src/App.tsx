@@ -76,7 +76,7 @@ const App: React.FC = () => {
             <AICoach 
               isOpen={isCoachOpen} 
               onClose={() => setIsCoachOpen(false)} 
-              history={[]} 
+              history={history} 
             />
 
             {/* Floating Action Button for AI Coach */}

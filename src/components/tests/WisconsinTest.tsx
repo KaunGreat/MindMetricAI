@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useMemo } from 'react';
 import { Layers, RotateCcw, Trophy, CheckCircle2, XCircle, ChevronLeft, LayoutDashboard, Info } from 'lucide-react';
 
 interface WisconsinTestProps {
-  onComplete: (score: number, metadata?: any) => void;
+  onComplete: (score: number, metadata?: Record<string, unknown>) => void;
   onCancel: () => void;
 }
 

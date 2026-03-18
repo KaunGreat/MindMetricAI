@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback, useRef } from 'react';
 import { AlertCircle, RotateCcw, Trophy, ChevronLeft, Circle, Square } from 'lucide-react';
 
 interface GoNoGoTestProps {
-  onComplete: (score: number, metadata?: any) => void;
+  onComplete: (score: number, metadata?: Record<string, unknown>) => void;
   onCancel: () => void;
 }
 
