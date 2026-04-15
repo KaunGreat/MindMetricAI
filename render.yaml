@@ -1,7 +1,4 @@
 # render.yaml
-# Blueprint для автоматического деплоя на Render
-# Документация: https://render.com/docs/blueprint-spec
-
 services:
   # 🔹 Бэкенд-сервис (FastAPI)
   - type: web
@@ -25,12 +22,11 @@ services:
       - key: ALLOWED_ORIGINS
         value: "https://mind-metric-ai-e76m.vercel.app,http://localhost:5173"
 
-  # 🔹 База данных (PostgreSQL)
-  - type: postgres
+  # 🔹 База данных (PostgreSQL) - ИСПРАВЛЕНО: psql вместо postgres
+  - type: psql
     name: mindmetric-db
     plan: free
-    ipAllowList: []  # Разрешить доступ только из сервисов Render
+    ipAllowList: []
 
 databases:
-  # Ссылка на БД для использования в services
   - name: mindmetric-db
