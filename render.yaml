@@ -1,0 +1,36 @@
+# render.yaml
+# Blueprint для автоматического деплоя на Render
+# Документация: https://render.com/docs/blueprint-spec
+
+services:
+  # 🔹 Бэкенд-сервис (FastAPI)
+  - type: web
+    name: mindmetric-api
+    env: python
+    rootDir: backend
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: gunicorn main:app --workers 1 --worker-class uvicorn.workers.UvicornWorker --bind 0.0.0.0:8000 --timeout 120
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.0
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mindmetric-db
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: 30
+      - key: ALLOWED_ORIGINS
+        value: "https://mind-metric-ai-e76m.vercel.app,http://localhost:5173"
+
+  # 🔹 База данных (PostgreSQL)
+  - type: postgres
+    name: mindmetric-db
+    plan: free
+    ipAllowList: []  # Разрешить доступ только из сервисов Render
+
+databases:
+  # Ссылка на БД для использования в services
+  - name: mindmetric-db
