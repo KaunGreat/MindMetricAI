@@ -1,6 +1,5 @@
-# render.yaml
+# render.yaml - упрощённая версия (только веб-сервис)
 services:
-  # 🔹 Бэкенд-сервис (FastAPI)
   - type: web
     name: mindmetric-api
     env: python
@@ -12,21 +11,10 @@ services:
       - key: PYTHON_VERSION
         value: 3.11.0
       - key: DATABASE_URL
-        fromDatabase:
-          name: mindmetric-db
-          property: connectionString
+        sync: false  # Добавим вручную после создания БД
       - key: SECRET_KEY
         generateValue: true
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
         value: 30
       - key: ALLOWED_ORIGINS
         value: "https://mind-metric-ai-e76m.vercel.app,http://localhost:5173"
-
-  # 🔹 База данных (PostgreSQL) - ИСПРАВЛЕНО: psql вместо postgres
-  - type: psql
-    name: mindmetric-db
-    plan: free
-    ipAllowList: []
-
-databases:
-  - name: mindmetric-db
